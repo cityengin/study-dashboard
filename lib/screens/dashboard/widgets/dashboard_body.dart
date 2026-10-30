@@ -5,6 +5,9 @@ import 'deadline_list.dart';
 import 'profile_banner.dart';
 import 'stats_row.dart';
 
+// Ngưỡng phân chia bố cục 1 cột và 2 cột (màn hình rộng >= 600)
+const double dashboardWideBreakpoint = 600.0;
+
 class DashboardBody extends StatelessWidget {
   final List<Course> courses;
   final List<Deadline> deadlines;
@@ -20,7 +23,7 @@ class DashboardBody extends StatelessWidget {
     // [LayoutBuilder] CHỈ dùng constraints.maxWidth từ LayoutBuilder để điều hướng bố cục responsive, KHÔNG dùng MediaQuery.size
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final isWideScreen = constraints.maxWidth >= 600;
+        final isWideScreen = constraints.maxWidth >= dashboardWideBreakpoint;
 
         // [SingleChildScrollView] Cho phép cuộn trang linh hoạt tránh lỗi tràn không gian chiều dọc
         return SingleChildScrollView(
@@ -39,7 +42,7 @@ class DashboardBody extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // Bố cục phân nhánh theo độ rộng màn hình (ngưỡng 600)
+              // Bố cục phân nhánh theo độ rộng màn hình (ngưỡng dashboardWideBreakpoint = 600)
               if (!isWideScreen) ...[
                 // Dưới 600: Xếp dọc 1 cột (Môn học rồi đến Hạn chót)
                 CourseList(courses: courses),
