@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/axis_playground.dart';
 import 'widgets/demo_card.dart';
+import 'widgets/flex_playground.dart';
 
 class DemoLabScreen extends StatelessWidget {
   const DemoLabScreen({super.key});
@@ -51,12 +52,10 @@ class DemoLabScreen extends StatelessWidget {
             ),
             _buildTabWrapper(
               child: const DemoCard(
-                title: 'Expanded và Flexible',
-                description: 'So sánh cơ chế phân chia không gian giữa Expanded và Flexible.',
-                child: SizedBox(
-                  height: 120,
-                  child: Center(child: Text('Nội dung tab Expanded/Flexible')),
-                ),
+                title: 'Expanded và Flexible (Tight vs Loose Constraints)',
+                description:
+                    'So sánh trực quan giữa việc ép đầy không gian (tight) của Expanded và giữ kích thước nội tại (loose) của Flexible.',
+                child: FlexPlayground(),
               ),
             ),
             _buildTabWrapper(

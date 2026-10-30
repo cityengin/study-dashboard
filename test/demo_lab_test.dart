@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:study_dashboard/screens/demo_lab/demo_lab_screen.dart';
 import 'package:study_dashboard/screens/demo_lab/widgets/axis_playground.dart';
+import 'package:study_dashboard/screens/demo_lab/widgets/flex_playground.dart';
 
 void main() {
   testWidgets('Khởi chạy DemoLabScreen, hiển thị đủ 4 tab và chuyển đổi mượt mà', (WidgetTester tester) async {
@@ -27,7 +28,7 @@ void main() {
     // Bấm chuyển sang tab 2: Expanded/Flexible
     await tester.tap(find.text('Expanded/Flexible'));
     await tester.pumpAndSettle();
-    expect(find.text('Nội dung tab Expanded/Flexible'), findsOneWidget);
+    expect(find.byType(FlexPlayground), findsOneWidget);
 
     // Bấm chuyển sang tab 3: Stack/Positioned
     await tester.tap(find.text('Stack/Positioned'));
@@ -75,6 +76,36 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.textContaining('mainAxisAlignment: MainAxisAlignment.center'), findsOneWidget);
 
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Thao tác tương tác trên FlexPlayground (thanh trượt flex A, B và cập nhật tỉ lệ)', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData(useMaterial3: true),
+        home: const Scaffold(
+          body: SingleChildScrollView(
+            child: FlexPlayground(),
+          ),
+        ),
+      ),
+    );
+
+    // Kiểm tra tỉ lệ ban đầu 1 : 2
+    expect(find.text('Tỉ lệ 1 : 2'), findsOneWidget);
+    expect(find.text('Cố định\n56px'), findsNWidgets(2));
+    expect(find.text('flex 1'), findsNWidgets(2));
+    expect(find.text('flex 2'), findsNWidgets(2));
+
+    // Kéo thanh trượt Flex A
+    final sliders = find.byType(Slider);
+    expect(sliders, findsNWidgets(2));
+
+    // Thao tác trượt Slider đầu tiên sang phải
+    await tester.drag(sliders.first, const Offset(100, 0));
+    await tester.pumpAndSettle();
+
+    // Không có exception
     expect(tester.takeException(), isNull);
   });
 }
