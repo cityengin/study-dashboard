@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'widgets/axis_playground.dart';
 import 'widgets/demo_card.dart';
 import 'widgets/flex_playground.dart';
+import 'widgets/stack_playground.dart';
 
 class DemoLabScreen extends StatelessWidget {
   const DemoLabScreen({super.key});
@@ -60,12 +61,10 @@ class DemoLabScreen extends StatelessWidget {
             ),
             _buildTabWrapper(
               child: const DemoCard(
-                title: 'Stack và Positioned',
-                description: 'Khám phá xếp chồng lớp giao diện và căn chỉnh tọa độ.',
-                child: SizedBox(
-                  height: 120,
-                  child: Center(child: Text('Nội dung tab Stack/Positioned')),
-                ),
+                title: 'Stack và Positioned (Xếp chồng và Tọa độ)',
+                description:
+                    'Khám phá thứ tự vẽ xếp lớp z-index, vị trí con không Positioned theo alignment, và hiệu ứng clipBehavior với tọa độ âm.',
+                child: StackPlayground(),
               ),
             ),
             _buildTabWrapper(

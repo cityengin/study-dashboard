@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:study_dashboard/screens/demo_lab/demo_lab_screen.dart';
 import 'package:study_dashboard/screens/demo_lab/widgets/axis_playground.dart';
 import 'package:study_dashboard/screens/demo_lab/widgets/flex_playground.dart';
+import 'package:study_dashboard/screens/demo_lab/widgets/stack_playground.dart';
 
 void main() {
   testWidgets('Khởi chạy DemoLabScreen, hiển thị đủ 4 tab và chuyển đổi mượt mà', (WidgetTester tester) async {
@@ -33,7 +34,7 @@ void main() {
     // Bấm chuyển sang tab 3: Stack/Positioned
     await tester.tap(find.text('Stack/Positioned'));
     await tester.pumpAndSettle();
-    expect(find.text('Nội dung tab Stack/Positioned'), findsOneWidget);
+    expect(find.byType(StackPlayground), findsOneWidget);
 
     // Bấm chuyển sang tab 4: Overflow
     await tester.tap(find.text('Overflow'));
@@ -101,11 +102,38 @@ void main() {
     final sliders = find.byType(Slider);
     expect(sliders, findsNWidgets(2));
 
-    // Thao tác trượt Slider đầu tiên sang phải
     await tester.drag(sliders.first, const Offset(100, 0));
     await tester.pumpAndSettle();
 
-    // Không có exception
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Thao tác tương tác trên StackPlayground (fit, clipBehavior, alignment)', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData(useMaterial3: true),
+        home: const Scaffold(
+          body: SingleChildScrollView(
+            child: StackPlayground(),
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Không Positioned\n(140×120)'), findsOneWidget);
+    expect(find.text('Positioned\n(80×60)'), findsOneWidget);
+    expect(find.text('NEW'), findsOneWidget);
+
+    // Chuyển fit sang expand
+    await tester.tap(find.text('expand (ép tràn)'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('fit: StackFit.expand'), findsOneWidget);
+
+    // Chuyển clip sang none
+    await tester.tap(find.text('none (cho phép tràn)'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('clipBehavior: Clip.none'), findsOneWidget);
+
     expect(tester.takeException(), isNull);
   });
 }
