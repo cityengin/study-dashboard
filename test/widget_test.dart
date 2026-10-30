@@ -1,30 +1,23 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:study_dashboard/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Khởi chạy ứng dụng và chuyển tab giữa Dashboard và Demo Lab', (WidgetTester tester) async {
+    // Khởi chạy ứng dụng
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Xác nhận thấy thanh NavigationBar
+    expect(find.byType(NavigationBar), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Mặc định thấy tiêu đề AppBar của Dashboard
+    expect(find.text('Study Dashboard'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Chuyển sang tab Demo Lab bằng cách bấm icon Demo Lab
+    await tester.tap(find.byIcon(Icons.science_outlined));
+    await tester.pumpAndSettle();
+
+    // Xác nhận đã chuyển sang màn hình Demo Lab (tìm thấy chữ Demo Lab trong Scaffold)
+    expect(find.text('Demo Lab'), findsWidgets);
   });
 }
