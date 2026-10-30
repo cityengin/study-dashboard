@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'widgets/profile_banner.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -10,8 +11,15 @@ class DashboardScreen extends StatelessWidget {
         title: const Text('Study Dashboard'),
         centerTitle: true,
       ),
-      body: const Center(
-        child: Text('Dashboard'),
+      // [SingleChildScrollView] Cho phép cuộn trang dashboard linh hoạt tránh lỗi overflow chiều dọc
+      body: const SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ProfileBanner(),
+          ],
+        ),
       ),
     );
   }
