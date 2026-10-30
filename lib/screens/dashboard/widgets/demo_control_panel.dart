@@ -4,24 +4,34 @@ class DemoControlPanel extends StatelessWidget {
   final bool simulateWidth;
   final double simWidth;
   final double fontScale;
+  final bool longText;
   final int courseCount;
   final int columnCount;
   final double effectiveWidth;
   final ValueChanged<bool> onSimulateWidthChanged;
   final ValueChanged<double> onSimWidthChanged;
   final ValueChanged<double> onFontScaleChanged;
+  final ValueChanged<bool> onLongTextChanged;
+  final VoidCallback? onAddCourse;
+  final VoidCallback? onRemoveCourse;
+  final VoidCallback onReset;
 
   const DemoControlPanel({
     super.key,
     required this.simulateWidth,
     required this.simWidth,
     required this.fontScale,
+    required this.longText,
     required this.courseCount,
     required this.columnCount,
     required this.effectiveWidth,
     required this.onSimulateWidthChanged,
     required this.onSimWidthChanged,
     required this.onFontScaleChanged,
+    required this.onLongTextChanged,
+    required this.onAddCourse,
+    required this.onRemoveCourse,
+    required this.onReset,
   });
 
   @override
@@ -155,6 +165,57 @@ class DemoControlPanel extends StatelessWidget {
             divisions: 12,
             label: '×${fontScale.toStringAsFixed(1)}',
             onChanged: onFontScaleChanged,
+          ),
+
+          const SizedBox(height: 12),
+          const Divider(height: 1),
+          const SizedBox(height: 8),
+
+          // [Wrap] Điều khiển chuỗi văn bản dài để kiểm thử overflow
+          Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Text(
+                'Tên dài (thêm hậu tố văn bản):',
+                style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+              ),
+              Switch(
+                key: const Key('long_switch'),
+                value: longText,
+                onChanged: onLongTextChanged,
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 8),
+
+          // [Wrap] Tự động xuống dòng các nút thao tác môn học và đặt lại tránh tràn layout (320px)
+          Wrap(
+            spacing: 8,
+            runSpacing: 6,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              FilledButton.tonalIcon(
+                key: const Key('add_btn'),
+                onPressed: onAddCourse,
+                icon: const Icon(Icons.add, size: 16),
+                label: Text('Thêm môn ($courseCount/12)'),
+              ),
+              OutlinedButton.icon(
+                key: const Key('remove_btn'),
+                onPressed: onRemoveCourse,
+                icon: const Icon(Icons.remove, size: 16),
+                label: const Text('Xóa môn'),
+              ),
+              TextButton.icon(
+                key: const Key('reset_btn'),
+                onPressed: onReset,
+                icon: const Icon(Icons.refresh, size: 16),
+                label: const Text('Đặt lại'),
+              ),
+            ],
           ),
         ],
       ),
