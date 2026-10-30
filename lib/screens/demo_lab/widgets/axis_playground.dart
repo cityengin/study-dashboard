@@ -168,6 +168,7 @@ class _AxisPlaygroundState extends State<AxisPlayground> {
         ),
         const SizedBox(height: 6),
         SegmentedButton<bool>(
+          showSelectedIcon: false,
           segments: const [
             ButtonSegment(
               value: true,
@@ -196,14 +197,15 @@ class _AxisPlaygroundState extends State<AxisPlayground> {
         ),
         const SizedBox(height: 6),
         SegmentedButton<MainAxisSize>(
+          showSelectedIcon: false,
           segments: const [
             ButtonSegment(
               value: MainAxisSize.max,
-              label: Text('max (chiếm trọn không gian)'),
+              label: Text('max'),
             ),
             ButtonSegment(
               value: MainAxisSize.min,
-              label: Text('min (ôm khít các con)'),
+              label: Text('min'),
             ),
           ],
           selected: {_mainAxisSize},

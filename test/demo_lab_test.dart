@@ -3,10 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:study_dashboard/screens/demo_lab/demo_lab_screen.dart';
 import 'package:study_dashboard/screens/demo_lab/widgets/axis_playground.dart';
 import 'package:study_dashboard/screens/demo_lab/widgets/flex_playground.dart';
+import 'package:study_dashboard/screens/demo_lab/widgets/overflow_gallery.dart';
 import 'package:study_dashboard/screens/demo_lab/widgets/stack_playground.dart';
 
 void main() {
-  testWidgets('Khởi chạy DemoLabScreen, hiển thị đủ 4 tab và chuyển đổi mượt mà', (WidgetTester tester) async {
+  testWidgets('Khởi chạy DemoLabScreen, chuyển qua các tab và nuốt lỗi có chủ đích ở tab 4', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData(useMaterial3: true),
@@ -23,26 +24,30 @@ void main() {
     expect(find.text('Stack/Positioned'), findsOneWidget);
     expect(find.text('Overflow'), findsOneWidget);
 
-    // Mặc định ở tab 1 và chứa AxisPlayground
+    // Mặc định ở tab 1
     expect(find.byType(AxisPlayground), findsOneWidget);
 
-    // Bấm chuyển sang tab 2: Expanded/Flexible
+    // Tab 2: Expanded/Flexible
+    await tester.ensureVisible(find.text('Expanded/Flexible'));
     await tester.tap(find.text('Expanded/Flexible'));
     await tester.pumpAndSettle();
     expect(find.byType(FlexPlayground), findsOneWidget);
 
-    // Bấm chuyển sang tab 3: Stack/Positioned
+    // Tab 3: Stack/Positioned
+    await tester.ensureVisible(find.text('Stack/Positioned'));
     await tester.tap(find.text('Stack/Positioned'));
     await tester.pumpAndSettle();
     expect(find.byType(StackPlayground), findsOneWidget);
 
-    // Bấm chuyển sang tab 4: Overflow
+    // Tab 4: Overflow (chứa lỗi overflow chủ đích để minh họa)
+    await tester.ensureVisible(find.text('Overflow'));
     await tester.tap(find.text('Overflow'));
-    await tester.pumpAndSettle();
-    expect(find.text('Nội dung tab Overflow'), findsOneWidget);
+    await tester.pump();
+    while (tester.takeException() != null) {}
+    await tester.pump(const Duration(milliseconds: 500));
+    while (tester.takeException() != null) {}
 
-    // Xác nhận không có lỗi xảy ra
-    expect(tester.takeException(), isNull);
+    expect(find.byType(OverflowGallery), findsOneWidget);
   });
 
   testWidgets('Thao tác tương tác trên AxisPlayground (Row/Column, alignments, mainAxisSize)', (WidgetTester tester) async {
@@ -68,7 +73,7 @@ void main() {
     expect(find.textContaining('Column('), findsOneWidget);
 
     // Chọn mainAxisSize min
-    await tester.tap(find.text('min (ôm khít các con)'));
+    await tester.tap(find.text('min'));
     await tester.pumpAndSettle();
     expect(find.textContaining('mainAxisSize: MainAxisSize.min'), findsOneWidget);
 
@@ -125,15 +130,101 @@ void main() {
     expect(find.text('NEW'), findsOneWidget);
 
     // Chuyển fit sang expand
-    await tester.tap(find.text('expand (ép tràn)'));
+    await tester.tap(find.text('expand'));
     await tester.pumpAndSettle();
     expect(find.textContaining('fit: StackFit.expand'), findsOneWidget);
 
     // Chuyển clip sang none
-    await tester.tap(find.text('none (cho phép tràn)'));
+    await tester.tap(find.text('Clip.none'));
     await tester.pumpAndSettle();
     expect(find.textContaining('clipBehavior: Clip.none'), findsOneWidget);
 
     expect(tester.takeException(), isNull);
   });
+
+  // Kiểm thử độc lập từng case trong thư viện overflowCases
+  for (final overflowCase in overflowCases) {
+    testWidgets('Kiểm thử độc lập case: ${overflowCase.title}', (WidgetTester tester) async {
+      // 1. Pump beforeBuilder một mình: nếu throwsOverflow thì bắt buộc phải ném lỗi overflowed
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(useMaterial3: true),
+          home: Scaffold(
+            body: Center(
+              child: Builder(builder: overflowCase.beforeBuilder),
+            ),
+          ),
+        ),
+      );
+
+      if (overflowCase.throwsOverflow) {
+        final error = tester.takeException();
+        expect(error, isNotNull);
+        expect(error.toString(), contains('overflowed'));
+
+        // Nuốt hết các exception còn lại từ frame render
+        while (tester.takeException() != null) {}
+      }
+
+      // 2. Pump afterBuilder một mình: đảm bảo giải pháp khắc phục triệt để không có bất kỳ exception nào
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(useMaterial3: true),
+          home: Scaffold(
+            body: Center(
+              child: Builder(builder: overflowCase.afterBuilder),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    });
+  }
+
+  // Kiểm thử tab 1-3 của DemoLabScreen ở các bề rộng 320, 411, 800 với textScaler 1.3
+  const testWidths = [320.0, 411.0, 800.0];
+
+  for (final width in testWidths) {
+    testWidgets(
+      'Kiểm thử tab 1-3 DemoLabScreen tại bề rộng $width với textScaler 1.3 không bị exception',
+      (WidgetTester tester) async {
+        tester.view.physicalSize = Size(width, 1000);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: ThemeData(useMaterial3: true),
+            home: MediaQuery(
+              data: MediaQueryData(
+                size: Size(width, 1000),
+                textScaler: const TextScaler.linear(1.3),
+              ),
+              child: const DemoLabScreen(),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Tab 1: Trục chính/phụ
+        expect(tester.takeException(), isNull);
+
+        // Tab 2: Expanded/Flexible
+        await tester.ensureVisible(find.text('Expanded/Flexible'));
+        await tester.tap(find.text('Expanded/Flexible'));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+
+        // Tab 3: Stack/Positioned
+        await tester.ensureVisible(find.text('Stack/Positioned'));
+        await tester.tap(find.text('Stack/Positioned'));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
 }

@@ -40,7 +40,8 @@ class _StackPlaygroundState extends State<StackPlayground> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final generatedCode = '''Stack(
+    final generatedCode =
+        '''Stack(
   alignment: ${_getAlignmentCode(_alignment)},
   fit: StackFit.${_fit.name},
   clipBehavior: Clip.${_clipBehavior.name},
@@ -103,7 +104,9 @@ class _StackPlaygroundState extends State<StackPlayground> {
             height: 220,
             child: DecoratedBox(
               decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                color: theme.colorScheme.surfaceContainerHighest.withValues(
+                  alpha: 0.3,
+                ),
                 border: Border.all(
                   color: theme.colorScheme.outline,
                   width: 1.5,
@@ -186,7 +189,10 @@ class _StackPlaygroundState extends State<StackPlayground> {
                         right: 8,
                         top: 8,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.red.shade600,
                             borderRadius: BorderRadius.circular(12),
@@ -220,10 +226,13 @@ class _StackPlaygroundState extends State<StackPlayground> {
         // 1. Stack.alignment Dropdown
         Text(
           '1. Stack.alignment (Vị trí con không Positioned):',
-          style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 6),
         DropdownButtonFormField<Alignment>(
+          isExpanded: true,
           initialValue: _alignment,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
@@ -232,7 +241,7 @@ class _StackPlaygroundState extends State<StackPlayground> {
           items: _alignmentOptions.map((opt) {
             return DropdownMenuItem<Alignment>(
               value: opt.key,
-              child: Text(opt.value),
+              child: Text(opt.value, overflow: TextOverflow.ellipsis),
             );
           }).toList(),
           onChanged: (val) {
@@ -248,19 +257,16 @@ class _StackPlaygroundState extends State<StackPlayground> {
         // 2. StackFit SegmentedButton
         Text(
           '2. Stack.fit (Quy tắc ép kích thước con):',
-          style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 6),
         SegmentedButton<StackFit>(
+          showSelectedIcon: false,
           segments: const [
-            ButtonSegment(
-              value: StackFit.loose,
-              label: Text('loose (tự do)'),
-            ),
-            ButtonSegment(
-              value: StackFit.expand,
-              label: Text('expand (ép tràn)'),
-            ),
+            ButtonSegment(value: StackFit.loose, label: Text('loose')),
+            ButtonSegment(value: StackFit.expand, label: Text('expand')),
           ],
           selected: {_fit},
           onSelectionChanged: (val) {
@@ -274,19 +280,16 @@ class _StackPlaygroundState extends State<StackPlayground> {
         // 3. ClipBehavior SegmentedButton
         Text(
           '3. clipBehavior (Xử lý phần tử nằm ngoài khung):',
-          style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 6),
         SegmentedButton<Clip>(
+          showSelectedIcon: false,
           segments: const [
-            ButtonSegment(
-              value: Clip.hardEdge,
-              label: Text('hardEdge (cắt mép)'),
-            ),
-            ButtonSegment(
-              value: Clip.none,
-              label: Text('none (cho phép tràn)'),
-            ),
+            ButtonSegment(value: Clip.hardEdge, label: Text('Clip.hardEdge')),
+            ButtonSegment(value: Clip.none, label: Text('Clip.none')),
           ],
           selected: {_clipBehavior},
           onSelectionChanged: (val) {
@@ -300,7 +303,9 @@ class _StackPlaygroundState extends State<StackPlayground> {
         // 4. Slider x và y
         Text(
           '4. Tọa độ Positioned (hỗ trợ giá trị âm kiểm tra clip):',
-          style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 6),
         LayoutBuilder(
@@ -360,13 +365,17 @@ class _StackPlaygroundState extends State<StackPlayground> {
         // Đoạn code tương ứng
         Text(
           'Mã nguồn Stack tương ứng:',
-          style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 6),
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
+            color: theme.colorScheme.surfaceContainerHighest.withValues(
+              alpha: 0.6,
+            ),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
               color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),

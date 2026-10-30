@@ -104,12 +104,14 @@ Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Điều chỉnh tỉ lệ phân chia Flex:',
-                    style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
+                  Expanded(
+                    child: Text(
+                      'Điều chỉnh tỉ lệ phân chia Flex:',
+                      style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
+                    ),
                   ),
+                  const SizedBox(width: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
@@ -131,7 +133,7 @@ Row(
               Row(
                 children: [
                   SizedBox(
-                    width: 72,
+                    width: 88,
                     child: Text(
                       'Flex A: $_flexA',
                       style: const TextStyle(fontWeight: FontWeight.w600),
@@ -156,7 +158,7 @@ Row(
               Row(
                 children: [
                   SizedBox(
-                    width: 72,
+                    width: 88,
                     child: Text(
                       'Flex B: $_flexB',
                       style: const TextStyle(fontWeight: FontWeight.w600),

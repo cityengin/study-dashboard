@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'widgets/axis_playground.dart';
 import 'widgets/demo_card.dart';
 import 'widgets/flex_playground.dart';
+import 'widgets/overflow_gallery.dart';
 import 'widgets/stack_playground.dart';
 
 class DemoLabScreen extends StatelessWidget {
@@ -68,14 +69,7 @@ class DemoLabScreen extends StatelessWidget {
               ),
             ),
             _buildTabWrapper(
-              child: const DemoCard(
-                title: 'Thư viện lỗi Overflow',
-                description: 'Các tình huống tràn không gian phổ biến và giải pháp khắc phục.',
-                child: SizedBox(
-                  height: 120,
-                  child: Center(child: Text('Nội dung tab Overflow')),
-                ),
-              ),
+              child: const OverflowGallery(),
             ),
           ],
         ),
