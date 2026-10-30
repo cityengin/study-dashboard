@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'widgets/axis_playground.dart';
 import 'widgets/demo_card.dart';
 
 class DemoLabScreen extends StatelessWidget {
@@ -42,12 +43,10 @@ class DemoLabScreen extends StatelessWidget {
           children: [
             _buildTabWrapper(
               child: const DemoCard(
-                title: 'Trục chính và Trục phụ',
-                description: 'Thử nghiệm tương tác bố cục với Row và Column.',
-                child: SizedBox(
-                  height: 120,
-                  child: Center(child: Text('Nội dung tab Trục chính/phụ')),
-                ),
+                title: 'Trục chính và Trục phụ (Main Axis & Cross Axis)',
+                description:
+                    'Tương tác trực tiếp với các thuộc tính định vị và đo lường kích thước của Row và Column.',
+                child: AxisPlayground(),
               ),
             ),
             _buildTabWrapper(
