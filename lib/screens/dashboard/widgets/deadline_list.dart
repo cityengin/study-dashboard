@@ -70,11 +70,12 @@ class DeadlineList extends StatelessWidget {
     final theme = Theme.of(context);
     final isUrgent = deadline.daysLeft <= 3;
 
-    // [Row + Expanded] Tiêu đề hạn chót dài được bọc trong Expanded để không đẩy Chip tràn ra ngoài mép màn hình
+    // [Row + Expanded + Flexible] Tiêu đề chiếm flex 2, Chip bọc Flexible (flex 1) + FittedBox để tự co tỷ lệ khi chữ phóng to cực đại (font scale 2.0)
     return Row(
       children: [
         // Tiêu đề bọc Expanded với ellipsis tránh tràn hàng
         Expanded(
+          flex: 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -100,22 +101,28 @@ class DeadlineList extends StatelessWidget {
         ),
         const SizedBox(width: 8),
 
-        // Chip hiển thị số ngày còn lại
-        Chip(
-          visualDensity: VisualDensity.compact,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          side: BorderSide.none,
-          backgroundColor: isUrgent
-              ? theme.colorScheme.errorContainer
-              : theme.colorScheme.secondaryContainer,
-          label: Text(
-            'Còn ${deadline.daysLeft} ngày',
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.bold,
-              color: isUrgent
-                  ? theme.colorScheme.onErrorContainer
-                  : theme.colorScheme.onSecondaryContainer,
+        // [Flexible + FittedBox] Chip hiển thị số ngày bọc trong Flexible và FittedBox để co nhỏ vừa vặn không gian
+        Flexible(
+          flex: 1,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Chip(
+              visualDensity: VisualDensity.compact,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              side: BorderSide.none,
+              backgroundColor: isUrgent
+                  ? theme.colorScheme.errorContainer
+                  : theme.colorScheme.secondaryContainer,
+              label: Text(
+                'Còn ${deadline.daysLeft} ngày',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  color: isUrgent
+                      ? theme.colorScheme.onErrorContainer
+                      : theme.colorScheme.onSecondaryContainer,
+                ),
+              ),
             ),
           ),
         ),
