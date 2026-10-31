@@ -146,8 +146,8 @@ study-dashboard/
 
 | Thành viên | Nhiệm vụ đảm trách trong dự án |
 | :--- | :--- |
-| `<Họ tên – MSSV>` | Phân hệ Dashboard (ProfileBanner, StatsRow, CourseList, DeadlineList, DashboardBody), Bảng điều khiển demo (DemoControlPanel, PreviewFrame), Thiết kế kịch bản kiểm thử bố cục (`dashboard_layout_test.dart`, `control_panel_test.dart`) và tài liệu README. |
-| `<Họ tên – MSSV>` | Phân hệ Demo Lab (AxisPlayground, FlexPlayground, StackPlayground, OverflowGallery, DemoCard, DemoLabScreen) và bộ kiểm thử tương tác phòng thí nghiệm (`demo_lab_test.dart`). |
+| `Đặng Công Thắng` | Phân hệ Dashboard (ProfileBanner, StatsRow, CourseList, DeadlineList, DashboardBody), Bảng điều khiển demo (DemoControlPanel, PreviewFrame), Thiết kế kịch bản kiểm thử bố cục (`dashboard_layout_test.dart`, `control_panel_test.dart`) và tài liệu README. |
+| `Võ Văn Thái` | Phân hệ Demo Lab (AxisPlayground, FlexPlayground, StackPlayground, OverflowGallery, DemoCard, DemoLabScreen) và bộ kiểm thử tương tác phòng thí nghiệm (`demo_lab_test.dart`). |
 
 ---
 
