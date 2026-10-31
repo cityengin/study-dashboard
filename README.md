@@ -4,6 +4,15 @@ Study Dashboard là ứng dụng di động được xây dựng bằng Flutter 
 
 ---
 
+## Hình ảnh minh họa giao diện & Phòng thí nghiệm
+
+| Giao diện chính Dashboard | Khung mô phỏng & Bảng điều khiển | Trục chính / phụ (Main & Cross Axis) | Xử lý lỗi Overflow (Trước vs Sau) |
+| :---: | :---: | :---: | :---: |
+| <img src="images/dashboard_banner_stats.png" width="220" alt="Dashboard Giao diện" /> | <img src="images/control_panel_preview.png" width="220" alt="Bảng điều khiển Demo" /> | <img src="images/demo_axis_playground.png" width="220" alt="Axis Playground" /> | <img src="images/demo_overflow_gallery.png" width="220" alt="Overflow Gallery" /> |
+| **DashboardBody**<br>Bố cục thẻ thông tin, thống kê & danh sách học phần | **PreviewFrame**<br>Mô phỏng 600 px (2 cột), cỡ chữ ×1.3 & text dài | **AxisPlayground**<br>Sân chơi trực quan hóa hướng trục và căn chỉnh | **OverflowGallery**<br>Đối chiếu trực quan dải sọc vàng đen Trước & Sau |
+
+---
+
 ## 1. Mục tiêu theo yêu cầu chủ đề
 
 * **Cơ sở lý thuyết vững chắc:**
